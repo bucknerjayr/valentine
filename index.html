@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>For Victoria ❤️</title>
+  <title>Welcome Victoria ❤️</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -44,46 +44,34 @@
       font-size: 18px;
       margin-bottom: 28px;
       color: #333;
+      line-height: 1.5;
     }
 
-    .hint {
-      font-size: 13px;
-      color: #999;
-      margin-top: 10px;
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      position: relative;
     }
 
     button {
-      padding: 12px 26px;
+      padding: 14px 26px;
       font-size: 16px;
       border-radius: 30px;
       border: none;
       cursor: pointer;
+      transition: transform 0.15s ease;
+      min-width: 110px;
     }
 
     #yesBtn {
       background-color: #e63946;
       color: white;
-      margin-right: 10px;
     }
 
     #noBtn {
       background-color: #eee;
       color: #333;
-      position: absolute;
-      transition: transform 0.2s;
-    }
-
-    .phrase {
-      position: absolute;
-      font-size: 14px;
-      color: #e63946;
-      animation: fadeOut 1.5s forwards;
-      pointer-events: none;
-    }
-
-    @keyframes fadeOut {
-      0% { opacity: 1; transform: translateY(0); }
-      100% { opacity: 0; transform: translateY(-20px); }
     }
 
     .message {
@@ -91,6 +79,7 @@
       color: #e63946;
       display: none;
       line-height: 1.5;
+      margin-top: 20px;
       animation: fadeIn 0.6s ease;
     }
 
@@ -112,23 +101,25 @@
 
 <body>
 
-  <div class="card">
-    <h1>Victoria ❤️</h1>
+  <div class="card" id="card">
+    <h1>Welcome Victoria ❤️</h1>
+
     <div class="subtitle">
-      I’ve really enjoyed getting to know you…  
-      and I was hoping you’d say yes to this.
+      I’ve really enjoyed getting to know you…<br>
+      and I was hoping you’d say yes to this.<br><br>
+      <strong>Will you be my Valentine?</strong>
     </div>
 
-    <button id="yesBtn">Yes 💕</button>
-    <button id="noBtn">No 🙃</button>
-
-    <div class="hint">(Take your time… or don’t 😏)</div>
+    <div class="buttons">
+      <button id="yesBtn">Yes 💕</button>
+      <button id="noBtn">No 🙃</button>
+    </div>
 
     <div class="message" id="loveMessage">
       I was hoping you’d choose that ❤️  
       <br><br>
-      You’ve been on my mind more than you probably realize,  
-      and I’m really excited to see where this goes.
+      I’m really enjoying where this is heading,  
+      and I’m excited to keep seeing you.
       <br><br>
       Happy Valentine’s Day 💫  
       <br><br>
@@ -137,54 +128,46 @@
   </div>
 
   <script>
-    const noBtn = document.getElementById("noBtn");
+    const card = document.getElementById("card");
     const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
     const message = document.getElementById("loveMessage");
 
-    let scale = 1;
+    const maxYesScale = 1.4; // 40% max growth
+    const minNoScale = 0.4;
 
-    const phrases = [
-      "Hey now 😌",
-      "Not so fast",
-      "Careful…",
-      "That one’s tricky 😏",
-      "You sure?",
-      "Think about it 💕",
-      "I like where this is going"
-    ];
+    function handleMove(x, y) {
+      const noRect = noBtn.getBoundingClientRect();
+      const distance = Math.hypot(
+        x - (noRect.left + noRect.width / 2),
+        y - (noRect.top + noRect.height / 2)
+      );
 
-    function moveButton() {
-      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+      const maxDistance = 250;
+      const proximity = Math.max(0, Math.min(1, 1 - distance / maxDistance));
 
-      noBtn.style.left = `${x}px`;
-      noBtn.style.top = `${y}px`;
+      const yesScale = 1 + proximity * (maxYesScale - 1);
+      const noScale = 1 - proximity * (1 - minNoScale);
 
-      scale *= 0.85;
-      noBtn.style.transform = `scale(${scale})`;
-
-      const phrase = document.createElement("div");
-      phrase.className = "phrase";
-      phrase.innerText = phrases[Math.floor(Math.random() * phrases.length)];
-      phrase.style.left = `${x}px`;
-      phrase.style.top = `${y - 20}px`;
-      document.body.appendChild(phrase);
-
-      setTimeout(() => phrase.remove(), 1500);
+      yesBtn.style.transform = `scale(${yesScale})`;
+      noBtn.style.transform = `scale(${noScale})`;
     }
 
-    noBtn.addEventListener("mouseenter", moveButton);
-    noBtn.addEventListener("touchstart", moveButton);
+    document.addEventListener("mousemove", e => {
+      handleMove(e.clientX, e.clientY);
+    });
+
+    document.addEventListener("touchmove", e => {
+      if (e.touches.length > 0) {
+        handleMove(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    });
 
     yesBtn.addEventListener("click", () => {
-      yesBtn.style.display = "none";
-      noBtn.style.display = "none";
-      document.querySelector(".hint").style.display = "none";
+      document.querySelector(".buttons").style.display = "none";
       message.style.display = "block";
 
-      for (let i = 0; i < 30; i++) {
-        createHeart();
-      }
+      for (let i = 0; i < 30; i++) createHeart();
     });
 
     function createHeart() {
@@ -200,8 +183,6 @@
     }
 
     setInterval(createHeart, 700);
-
-    moveButton();
   </script>
 
 </body>
