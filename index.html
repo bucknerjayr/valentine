@@ -42,9 +42,15 @@
 
     .subtitle {
       font-size: 18px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
       color: #333;
       line-height: 1.5;
+    }
+
+    .music-warning {
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 18px;
     }
 
     .buttons {
@@ -60,13 +66,20 @@
       border-radius: 30px;
       border: none;
       cursor: pointer;
-      transition: transform 0.15s ease;
       min-width: 110px;
+      transition: transform 0.15s ease;
     }
 
     #yesBtn {
       background-color: #e63946;
       color: white;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
     }
 
     #noBtn {
@@ -81,6 +94,11 @@
       line-height: 1.5;
       margin-top: 20px;
       animation: fadeIn 0.6s ease;
+    }
+
+    .music {
+      display: none;
+      margin-top: 20px;
     }
 
     /* Hearts */
@@ -102,12 +120,16 @@
 <body>
 
   <div class="card" id="card">
-    <h1>Welcome Victoria ❤️</h1>
+    <h1> Victoria ❤️</h1>
 
     <div class="subtitle">
       I’ve really enjoyed getting to know you…<br>
       and I was hoping you’d say yes to this.<br><br>
-      <strong>Will you be my Valentine?</strong>
+      <strong>Will you be my Valentine??</strong>
+    </div>
+
+    <div class="music-warning">
+     //(A song will play if you say yes 🎶)
     </div>
 
     <div class="buttons">
@@ -121,19 +143,31 @@
       I’m really enjoying where this is heading,  
       and I’m excited to keep seeing you.
       <br><br>
-      Happy Valentine’s Day 💫  
+      Happy Valentine’s Day ❤️   
       <br><br>
       — <strong>Herman</strong>
+    </div>
+
+    <div class="music" id="music">
+      <iframe
+        style="border-radius:12px"
+        src="https://open.spotify.com/embed/track/1D1M805zV8DwhYXsvJdQZx?utm_source=generator"
+        width="100%"
+        height="152"
+        frameborder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy">
+      </iframe>
     </div>
   </div>
 
   <script>
-    const card = document.getElementById("card");
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
     const message = document.getElementById("loveMessage");
+    const music = document.getElementById("music");
 
-    const maxYesScale = 1.4; // 40% max growth
+    const maxYesScale = 1.4;
     const minNoScale = 0.4;
 
     function handleMove(x, y) {
@@ -165,7 +199,9 @@
 
     yesBtn.addEventListener("click", () => {
       document.querySelector(".buttons").style.display = "none";
+      document.querySelector(".music-warning").style.display = "none";
       message.style.display = "block";
+      music.style.display = "block";
 
       for (let i = 0; i < 30; i++) createHeart();
     });
