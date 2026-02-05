@@ -37,12 +37,12 @@
 
     h1 {
       color: #e63946;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .subtitle {
       font-size: 18px;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       color: #333;
       line-height: 1.5;
     }
@@ -57,7 +57,6 @@
       display: flex;
       justify-content: center;
       gap: 15px;
-      position: relative;
     }
 
     button {
@@ -96,12 +95,7 @@
       animation: fadeIn 0.6s ease;
     }
 
-    .music {
-      display: none;
-      margin-top: 20px;
-    }
-
-    /* Hearts */
+    /* Floating hearts */
     .heart {
       position: absolute;
       color: #e63946;
@@ -120,12 +114,12 @@
 <body>
 
   <div class="card" id="card">
-    <h1> Victoria ❤️</h1>
+    <h1>Welcome Victoria ❤️</h1>
 
     <div class="subtitle">
       I’ve really enjoyed getting to know you…<br>
       and I was hoping you’d say yes to this.<br><br>
-      <strong>Will you be my Valentine??</strong>
+      <strong>Will you be my Valentine?</strong>
     </div>
 
     <div class="buttons">
@@ -139,32 +133,21 @@
       I’m really enjoying where this is heading,  
       and I’m excited to keep seeing you.
       <br><br>
-      Happy Valentine’s Day ❤️   
+      Happy Valentine’s Day ❤️  
       <br><br>
       — <strong>Herman</strong>
     </div>
-
-    <div class="music" id="music">
-  <iframe
-    style="border-radius:12px"
-    src="https://open.spotify.com/embed/track/3tZs3nVjySLbL320lP4mvs?utm_source=generator"
-    width="100%"
-    height="152"
-    frameborder="0"
-    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-    loading="lazy">
-  </iframe>
-</div>
-
   </div>
 
   <script>
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
     const message = document.getElementById("loveMessage");
-    const music = document.getElementById("music");
 
-    const maxYesScale = 1.4;
+    const spotifyLink =
+      "https://open.spotify.com/track/3tZs3nVjySLbL320lP4mvs";
+
+    const maxYesScale = 1.4; // max 40% growth
     const minNoScale = 0.4;
 
     function handleMove(x, y) {
@@ -198,9 +181,13 @@
       document.querySelector(".buttons").style.display = "none";
       document.querySelector(".music-warning").style.display = "none";
       message.style.display = "block";
-      music.style.display = "block";
 
       for (let i = 0; i < 30; i++) createHeart();
+
+      // Open Spotify after a short pause
+      setTimeout(() => {
+        window.open(spotifyLink, "_blank");
+      }, 1200);
     });
 
     function createHeart() {
@@ -220,4 +207,3 @@
 
 </body>
 </html>
-
